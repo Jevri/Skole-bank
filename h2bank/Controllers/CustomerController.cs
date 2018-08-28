@@ -16,14 +16,18 @@ namespace h2bank.Controllers
     public class CustomerController : ApiController
     {
         [HttpPost]
-        public void CreateCustomer(NewCustomer customer)
+        public int? CreateCustomer(NewCustomer customer)
         {
-            CustomerDataLayer.CreateCustomer(customer.Firstname, customer.Lastname);
+            if (customer != null)
+            {
+                return CustomerDataLayer.CreateCustomer(customer.Firstname, customer.Lastname);
+            }
+            return null;
         }
         [HttpDelete]
-        public void DeleteCustomer(int customer)
+        public bool DeleteCustomer(int customer)
         {
-            CustomerDataLayer.DeleteCustomer(customer);
+            return CustomerDataLayer.DeleteCustomer(customer);
         }
         [HttpGet]
         public Customer GetCusomer(int customer)

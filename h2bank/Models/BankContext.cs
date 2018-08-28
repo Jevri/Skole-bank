@@ -12,7 +12,12 @@ namespace h2bank.Models
         {
 
         }
-
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Account>().HasRequired(n => n.Customer)
+            .WithMany(n => n.Accounts)
+            .WillCascadeOnDelete(true);
+        }
         public DbSet<Customer> Customers { get; set; }
         public DbSet<Account> Accounts { get; set; }
         public DbSet<Transaction> Transactions { get; set; }

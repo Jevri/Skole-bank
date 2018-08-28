@@ -40,13 +40,15 @@ namespace h2bank
         {
             using (var ctx = new BankContext())
             {
-                ctx.Accounts.Add(new Account()
+                var account = new Account()
                 {
                     InterestRate = interest,
                     CreationDate = DateTime.Now,
-                    Balance = 0,
-                    Customer = ctx.Customers.SingleOrDefault(x => x.ID == CustomerId)
-                });
+                    Balance = 0
+                };
+                ctx.Accounts.Add(account);
+                ctx.Accounts.Attach(account);
+                ctx.Customers.FirstOrDefault(x => x.ID == CustomerId).Accounts.Add(account);
                 ctx.SaveChanges();
             }
         }

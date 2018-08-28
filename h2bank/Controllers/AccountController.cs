@@ -18,7 +18,10 @@ namespace h2bank.Controllers
         [HttpPost]
         public void CreateAccount(NewAccount account)
         {
-            AccountDataLayer.CreateAccount(account.Customer, AccountDataLayer.GetInterestForType(account.AccountType));
+            if (account != null)
+            {
+                AccountDataLayer.CreateAccount(account.Customer, AccountDataLayer.GetInterestForType(account.AccountType));
+            }
         }
         [HttpDelete]
         public void DeleteAccount(int account)

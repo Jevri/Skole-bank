@@ -8,28 +8,35 @@ namespace h2bank
 {
     public class CustomerDataLayer
     {
-        public static void DeleteCustomer(int id)
+        public static bool DeleteCustomer(int id)
         {
             using (var ctx = new BankContext())
             {
                 var customer = ctx.Customers.SingleOrDefault(x => x.ID == id);
-                ctx.Customers.Remove(customer);
-                ctx.SaveChanges();
+                if (customer != null) {
+                    ctx.Customers.Remove(customer);
+                    ctx.SaveChanges();
+                    return true;
+                }
+                return false;
             }
         }
 
-        public static void CreateCustomer(string firstname, string lastname)
+        public static int CreateCustomer(string firstname, string lastname)
         {
+            var customer = new Customer()
+            {
+                FirstName = firstname,
+                LastName = lastname,
+                CreationDate = DateTime.Now
+            };
             using (var ctx = new BankContext())
             {
-                ctx.Customers.Add(new Customer()
-                {
-                    FirstName = firstname,
-                    LastName = lastname,
-                    CreationDate = DateTime.Now
-                });
+                ctx.Customers.Add(customer);
                 ctx.SaveChanges();
+
             }
+            return customer.ID;
         }
 
         public static Customer[] GetAllCustomers()
