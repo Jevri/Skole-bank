@@ -16,17 +16,18 @@ namespace h2bank.Controllers
     public class AccountController : ApiController
     {
         [HttpPost]
-        public void CreateAccount(NewAccount account)
+        public int? CreateAccount(NewAccount account)
         {
             if (account != null)
             {
-                AccountDataLayer.CreateAccount(account.Customer, AccountDataLayer.GetInterestForType(account.AccountType));
+                return AccountDataLayer.CreateAccount(account.Customer, AccountDataLayer.GetInterestForType(account.AccountType));
             }
+            return null;
         }
         [HttpDelete]
-        public void DeleteAccount(int account)
+        public bool DeleteAccount(int account)
         {
-            AccountDataLayer.DeleteAccount(account);
+            return AccountDataLayer.DeleteAccount(account);
         }
         [HttpGet]
         public Account[] GetAccount(int id, string getby)

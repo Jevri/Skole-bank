@@ -51,7 +51,7 @@ namespace h2bank
         {
             using (var ctx = new BankContext())
             {
-                return ctx.Customers.SingleOrDefault(x => x.ID == id);
+                return ctx.Customers.FirstOrDefault(x => x.ID == id);
             }
         }
     }

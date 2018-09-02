@@ -36,7 +36,7 @@ namespace h2bank
             }
         }
 
-        public static void CreateAccount(int CustomerId, decimal interest)
+        public static int CreateAccount(int CustomerId, decimal interest)
         {
             using (var ctx = new BankContext())
             {
@@ -44,22 +44,27 @@ namespace h2bank
                 {
                     InterestRate = interest,
                     CreationDate = DateTime.Now,
-                    Balance = 0
+                    Balance = 0,
+                    Customer = ctx.Customers.FirstOrDefault(x => x.ID == CustomerId)
                 };
                 ctx.Accounts.Add(account);
-                ctx.Accounts.Attach(account);
-                ctx.Customers.FirstOrDefault(x => x.ID == CustomerId).Accounts.Add(account);
                 ctx.SaveChanges();
+                return account.ID;
             }
         }
 
-        public static void DeleteAccount(int id)
+        public static bool DeleteAccount(int id)
         {
             using (var ctx = new BankContext())
             {
                 var account = ctx.Accounts.SingleOrDefault(x => x.ID == id);
-                ctx.Accounts.Remove(account);
-                ctx.SaveChanges();
+                if (account != null)
+                {
+                    ctx.Accounts.Remove(account);
+                    ctx.SaveChanges();
+                    return true;
+                }
+                return false;
             }
         }
     }
